@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		.form-control{
+			text-align: center;
+		}
+		.output-text {
+			font-size: 2rem;
+			font-family: "Fira Code";
+		}
+		#sentence{
+			font-size: 1.5rem;
+			font-family: "Fira Code";
+		}
+		.instructions {
+			margin: 10px
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Sentence Highlighter</h1>
+	<div class="instructions">
+		<span style="color:blue">█</span> - Noun Phrase
+		<span style="color:red">█</span> - Verb Phrase
+	</div>
+	<form action="/" method="POST">
+		<div class="form-control">
+			<textarea name="sentence" id="sentence" cols="50" rows="10"></textarea>
+		</div>
+		<div class="form-control">
+			<button>Process</button>
+		</div>
+	</form>
+	<hr width="100%">
+	<h2>Output:</h2>
+	{% if tree_pos %}
+		<div class="output">
+			<span class="output-text">
+				{% for pos_tag in tree_pos %}
+					{% if pos_tag[1] == "CNP" or pos_tag[1] == "NP" %}
+						<span style="color:blue">{{ pos_tag[0][0] }}</span>
+					{% elif pos_tag[1] == "CVP" or pos_tag[1] == "VP" %}
+						<span style="color:red">{{ pos_tag[0][0] }}</span>
+					{% else %}
+						<span>{{ pos_tag[0][0] }}</span>
+					{% endif %}
+				{% endfor %}
+			</span>
+		</div>
+	{% else %}
+		<div class="output">
+			<h1>No input given</h1>
+		</div>
+	{% endif %}
+</body>
+
+</html>
